@@ -39,7 +39,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/leads/7/validate",
+					"raw": "http://localhost:8080/leads/1/validate",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -47,7 +47,7 @@
 					"port": "8080",
 					"path": [
 						"leads",
-						"7",
+						"1",
 						"validate"
 					]
 				}
@@ -60,7 +60,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/leads/7",
+					"raw": "http://localhost:8080/leads/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -68,7 +68,7 @@
 					"port": "8080",
 					"path": [
 						"leads",
-						"7"
+						"1"
 					]
 				}
 			},
