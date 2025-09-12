@@ -1,86 +1,89 @@
  # CRM Leads Demo 
 
-Dependencia proyecto, uso de **Spring Boot**, **Kafka**, **H2**, 
-para implementar la validación de leads y convertirlos en prospectos.
+Project dependency, using **Spring Boot**, **Kafka**, **H2**, 
+to implement lead validation and convert them into prospects.
 
 ---
 
-## 1. Patrón Saga (Orchestration)
+## 1. Saga pattern (Orchestration)
 
-El **Patrón Saga** se utiliza para manejar **transacciones distribuidas** en sistemas basados en microservicios.  
-ya que  múltiples servicios se podria simular la atomicidad
+The **Saga Pattern** is used to handle **distributed transactions** in microservices-based systems.
+Since multiple services can be used, atomicity can be simulated.
 
-### **Por qué se usó**
-En este proyecto, el flujo de negocio consta de varios pasos:
 
-1. Validar identidad del cliente.  
-2. Verificar antecedentes criminales.  
-3. Ejecutar un scoring de crédito.  
-4. Aprobar o rechazar el lead.
+### **WHY**
 
-Dado que cada paso se ejecuta en **microservicios distintos(Stubs)**, se debe de orquestar los estados que se apliquen al lead.  
+In this project, the business flow consists of several steps:
 
-### **Beneficios**
-- Permite **desacoplar servicios**, donde cada uno es responsable de su propio estado.
-- Manejo robusto de errores:
-  - Si la validación criminal falla, se publica el evento y el lead se marca como **REJECTED**, sin afectar a otros servicios.
+1. Validate the customer's identity.
+2. Perform a criminal background check.
+3. Run a credit score.
+4. Approve or reject the lead.
+
+Since each step is executed in **different microservices (Stubs)**, the states that apply to the lead must be orchestrated.
+
+### **Benefits**
+
+- Allows **decoupling of services**, with each responsible for its own state.
+- Robust error handling:
+- If the error validation fails, the event is published and the lead is marked as **REJECTED**, without affecting other services.
 ---
 
-## 2. Arquitectura Hexagonal (Ports & Adapters)
+## 2. Hexagonal Architecture (Ports & Adapters)
 
-La **Arquitectura Hexagonal** separa la **lógica de negocio** del **código de infraestructura** (bases de datos, REST APIs, etc.) 
-mediante el uso de **puertos (ports)** e **implementaciones concretas (adapters)**.
+The **Hexagonal Architecture** separates **business logic** from **infrastructure code** (databases, REST APIs, etc.)
+through the use of **ports** and **specific implementations (adapters)**.
 
-### **Por qué se usó**
-- Mantener el **dominio de negocio independiente** de frameworks y tecnologías externas.  
+### **WHY**
+- Maintain the **business domain independent** of external frameworks and technologies.
 
+### **Components in this project**
 
-### **Componentes en este proyecto**
-- **Puertos (`EventPublisherPort`)** → Interfaces que definen contratos para publicar eventos.  
-- **Adaptadores** → Implementaciones concretas, como `KafkaEventPublisher`.  
-- **Dominio (`Lead`, `SagaState`)** → Contiene la lógica pura de negocio.  
-- **Aplicación (`OrchestratorService`)** → Coordina los casos de uso y orquesta el flujo.
-
+- **Ports (`EventPublisherPort`)** → Interfaces that define contracts for publishing events.
+- **Adapters** → Concrete implementations, such as `KafkaEventPublisher`.
+- **Domain (`Lead`, `SagaState`)** → Contains pure business logic.
+- **Application (`OrchestratorService`)** → Coordinates use cases and orchestrates the workflow.
 ---
 
 ## 3. Event-Driven Architecture (EDA)
 
-se basa en la **comunicación asíncrona** entre microservicios mediante **eventos**.
-Cada servicio **publica eventos** cuando ocurre algo relevante y **otros servicios se suscriben** a ellos para reaccionar.
+It is based on **asynchronous communication** between microservices using **events**.
+Each service **publishes events** when something relevant happens, and **other services subscribe** to them to react.
 
-### **Por qué se usó**
-- Los pasos del flujo (identidad, criminal, scoring) no deben estar **acoplados directamente** entre sí.
-- Con eventos:
-  - Cada servicio **escucha solo los eventos que necesita**.
+### **WHY**
 
-## **Requisitos previos**
-- **Java 17** (o superior)
+- The workflow steps (identity, criminal, scoring) should not be **directly coupled** to each other.
+- With events:
+- Each service **listens only to the events it needs**.
+
+## **Prerequisites**
+- **Java 17** 
 - **Maven 3.9+**
-- **Docker** y **Docker Compose**
+- **Docker** and **Docker Compose**
 - **IntelliJ IDEA** (Community o Ultimate)
 
 ---
 
-## **1. Clonar o importar el proyecto**
+## **1. Clone or export proyecto**
 - En IntelliJ:  
-  `File > New > Project from Existing Sources` → Selecciona la carpeta del proyecto.
+  `File > New > Project from Existing Sources` 
 
 ---
 
-## **2. Configurar Lombok en IntelliJ**
-1. `File > Settings > Plugins > Marketplace` → busca **Lombok** → instalar.
+## **2. Set up Lombok en IntelliJ**
+1. `File > Settings > Plugins > Marketplace` 
 2. `File > Settings > Build, Execution, Deployment > Compiler > Annotation Processors`  
-   → activa **Enable annotation processing**.
+   → activate **Enable annotation processing**.
 
 ---
 
-## **3. Levantar Kafka y Zookeeper**
-En la raíz del proyecto:
+## **3. Run Kafka and Zookeeper**
+At the root of the project:
 bash
 docker compose up -d
 
-## **4. Monitorear eventos en Kafka**
-Entra a Kafka UI: http://localhost:8081
+## **4. Monitor events inKafka**
+Kafka UI: http://localhost:8081
 
 ## **5. Consola H2**
-Entra a H2 Console: http://localhost:8080/h2-console
+H2 Console: http://localhost:8080/h2-console
