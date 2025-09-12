@@ -1,0 +1,78 @@
+{
+	"info": {
+		"_postman_id": "d1292d6c-b210-4482-84e5-e57c90037653",
+		"name": "addi-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "crear lead",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nationalId\":\"1234578\",\n  \"firstName\":\"yacuma\",\n  \"lastName\":\"Perez\",\n  \"birthDate\":\"1990-01-01\",\n  \"email\":\"juan@example.com\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/leads",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"leads"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lead validate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/leads/7/validate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"leads",
+						"7",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lead estate",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/leads/7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"leads",
+						"7"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
