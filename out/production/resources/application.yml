@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:crmdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+      group-id: addi-group
+
+logging:
+  level:
+    root: INFO
+    org.springframework.kafka: INFO
+
+server:
+  port: 8080
+
+stub:
+  criminal:
+    base-url: http://localhost:8080/stub/criminal/check
+  identity:
+    base-url: http://localhost:8080/stub/identity/verify
